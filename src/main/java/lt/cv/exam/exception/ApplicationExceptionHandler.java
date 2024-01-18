@@ -22,7 +22,7 @@ public class ApplicationExceptionHandler {
     @ExceptionHandler({ValidationException.class})
     protected ResponseEntity<ErrorResponse> handle(ValidationException exception) {
         return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
+                .status(HttpStatus.BAD_REQUEST)
                 .body(
                         ErrorResponse.builder()
                                 .message(exception.getMessage())
