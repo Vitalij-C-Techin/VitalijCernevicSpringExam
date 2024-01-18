@@ -20,12 +20,12 @@ public class FavoriteSongService {
     private final FavoriteSongRepository favoriteSongRepository;
 
     public List<Song> getFavoriteSongs(String uuid) {
-        uuid = sanitizeUuid(uuid);
+        final String sanitizedUuid = sanitizeUuid(uuid);
 
-        validateUuid(uuid);
-        validateUser(uuid);
+        validateUuid(sanitizedUuid);
+        validateUser(sanitizedUuid);
 
-        List<FavoriteSongRecord> songRecords = favoriteSongRepository.findByUuid(uuid);
+        List<FavoriteSongRecord> songRecords = favoriteSongRepository.findByUuid(sanitizedUuid);
 
         if (null == songRecords) {
             return new ArrayList<Song>();
@@ -35,63 +35,39 @@ public class FavoriteSongService {
     }
 
     public void addFavoriteSongs(String uuid, List<Song> songs) {
-        uuid = sanitizeUuid(uuid);
+        final String sanitizedUuid = sanitizeUuid(uuid);
 
-        System.out.println("Add song: " + uuid);
+        validateUuid(sanitizedUuid);
 
-        final String sanitizedUuid = uuid;
-
-        validateUuid(uuid);
-
-        userService.saveUser(uuid);
-
-
-        favoriteSongRepository.save(FavoriteSongRecord.builder()
-                .uuid(uuid)
-                .artist("artist")
-                .song("song")
-                .build()
-        );
-
+        userService.saveUser(sanitizedUuid);
 
         songs.forEach(song -> {
-            System.out.println(song.getTitle());
+            FavoriteSongRecord songRecord = favoriteSongRepository.findByUuidAndArtistAndSong(sanitizedUuid, song.getArtist(), song.getTitle());
 
-            //FavoriteSongRecord songRecord = favoriteSongRepository.findByUuidAndAuthorAndSong(sanitizedUuid, song.getArtist(), song.getTitle());
-
-            //favoriteSongRepository.findByUuidAndAuthorAndSong(sanitizedUuid, song.getArtist(), song.getTitle());
-
-            /*
-            favoriteSongRepository.save(FavoriteSongRecord.builder()
-                    .uuid(sanitizedUuid)
-                    .artist(song.getArtist())
-                    .song(song.getTitle())
-                    .build()
-            );
-
-             */
-        });
-
-        /*
-        songs.forEach(song -> {
-            FavoriteSongRecord songRecord = favoriteSongRepository.findByUuidAndAuthorAndSong(sanitizedUuid, song.getArtist(), song.getTitle());
-
-            if (null != songRecord) {
-                favoriteSongRepository.save(FavoriteSongRecord.builder()
-                        .uuid(sanitizedUuid)
-                        .artist(song.getArtist())
-                        .song(song.getTitle())
-                        .build()
+            if (null == songRecord) {
+                favoriteSongRepository.save(
+                        FavoriteSongRecord.builder()
+                                .uuid(sanitizedUuid)
+                                .artist(song.getArtist())
+                                .song(song.getTitle())
+                                .build()
                 );
             }
         });
-        */
     }
 
     public void deleteFavoriteSongs(String uuid, List<Song> songs) {
-        uuid = sanitizeUuid(uuid);
+        final String sanitizedUuid = sanitizeUuid(uuid);
 
-        userService.deleteUser(uuid);
+        validateUuid(sanitizedUuid);
+
+        songs.forEach(song -> {
+            FavoriteSongRecord songRecord = favoriteSongRepository.findByUuidAndArtistAndSong(sanitizedUuid, song.getArtist(), song.getTitle());
+
+            if (null != songRecord) {
+                favoriteSongRepository.delete(songRecord);
+            }
+        });
     }
 
     private void validateUser(String uuid) {
