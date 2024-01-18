@@ -11,5 +11,4 @@ public interface FavoriteSongRepository extends JpaRepository<FavoriteSongRecord
     List<FavoriteSongRecord> findByUuid(String uuid);
 
     FavoriteSongRecord findByUuidAndArtistAndSong(String uuid, String artist, String song);
-
 }
