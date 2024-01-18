@@ -25,8 +25,8 @@ public class SongController {
 
     @PostMapping
     public List<Song> addSongs(
-            @RequestParam @NotNull @NotBlank String uuid,
-            @RequestBody @Valid List<Song> songs
+            @RequestParam String uuid,
+            @RequestBody List<Song> songs
     ) {
         favoriteSongService.addFavoriteSongs(uuid, songs);
 
@@ -35,8 +35,8 @@ public class SongController {
 
     @DeleteMapping
     public List<Song> deleteSongs(
-            @RequestParam @NotNull @NotBlank String uuid,
-            @RequestBody @Valid List<Song> songs
+            @RequestParam String uuid,
+            @RequestBody List<Song> songs
     ) {
         favoriteSongService.deleteFavoriteSongs(uuid, songs);
 

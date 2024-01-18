@@ -10,5 +10,5 @@ import java.util.List;
 public interface FavoriteSongRepository extends JpaRepository<FavoriteSongRecord, Integer> {
     List<FavoriteSongRecord> findByUuid(String uuid);
 
-    //FavoriteSongRecord findByUuidAndAuthorAndSong(String uuid, String author, String song);
+    //List<FavoriteSongRecord> findByUuidAndAuthorAndSong(String uuid, String author, String song);
 }

@@ -1,6 +1,6 @@
 package lt.cv.exam.exception;
 
-import lt.cv.exam.persistance.response.ErrorResponse;
+import lt.cv.exam.model.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

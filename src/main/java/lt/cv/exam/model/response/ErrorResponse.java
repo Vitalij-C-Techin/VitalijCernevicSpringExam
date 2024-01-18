@@ -1,4 +1,4 @@
-package lt.cv.exam.persistance.response;
+package lt.cv.exam.model.response;
 
 import lombok.Builder;
 import lombok.Getter;

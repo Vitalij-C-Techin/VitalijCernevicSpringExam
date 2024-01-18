@@ -35,11 +35,63 @@ public class FavoriteSongService {
     }
 
     public void addFavoriteSongs(String uuid, List<Song> songs) {
+        uuid = sanitizeUuid(uuid);
 
+        System.out.println("Add song: " + uuid);
+
+        final String sanitizedUuid = uuid;
+
+        validateUuid(uuid);
+
+        userService.saveUser(uuid);
+
+
+        favoriteSongRepository.save(FavoriteSongRecord.builder()
+                .uuid(uuid)
+                .artist("artist")
+                .song("song")
+                .build()
+        );
+
+
+        songs.forEach(song -> {
+            System.out.println(song.getTitle());
+
+            //FavoriteSongRecord songRecord = favoriteSongRepository.findByUuidAndAuthorAndSong(sanitizedUuid, song.getArtist(), song.getTitle());
+
+            //favoriteSongRepository.findByUuidAndAuthorAndSong(sanitizedUuid, song.getArtist(), song.getTitle());
+
+            /*
+            favoriteSongRepository.save(FavoriteSongRecord.builder()
+                    .uuid(sanitizedUuid)
+                    .artist(song.getArtist())
+                    .song(song.getTitle())
+                    .build()
+            );
+
+             */
+        });
+
+        /*
+        songs.forEach(song -> {
+            FavoriteSongRecord songRecord = favoriteSongRepository.findByUuidAndAuthorAndSong(sanitizedUuid, song.getArtist(), song.getTitle());
+
+            if (null != songRecord) {
+                favoriteSongRepository.save(FavoriteSongRecord.builder()
+                        .uuid(sanitizedUuid)
+                        .artist(song.getArtist())
+                        .song(song.getTitle())
+                        .build()
+                );
+            }
+        });
+        */
     }
 
     public void deleteFavoriteSongs(String uuid, List<Song> songs) {
+        uuid = sanitizeUuid(uuid);
 
+        userService.deleteUser(uuid);
     }
 
     private void validateUser(String uuid) {

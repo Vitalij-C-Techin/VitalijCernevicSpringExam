@@ -15,14 +15,10 @@ public class UserService {
     }
 
     public void saveUser(String uuid) {
-        userRepository.save(
-                UserRecord.builder()
-                        .uuid(uuid)
-                        .build()
-        );
+        userRepository.save(new UserRecord(uuid));
     }
 
     public void deleteUser(String uuid) {
-        //TODO
+        userRepository.delete(new UserRecord(uuid));
     }
 }
